@@ -1,5 +1,4 @@
 import json
-from pickle import FALSE
 import jieba
 import jieba.posseg as pseg
 import string
