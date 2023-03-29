@@ -3,40 +3,50 @@ import jieba
 import jieba.posseg as pseg
 import string
 import math
+from tqdm import tqdm
 
-dataset = "../dataset/output.json"
+datasetPath = "../dataset/example.json"
 chineseDict = "../dict.txt.big"
-out = "../preprocessingData/questionsData.json"
+outPath = "../preprocessingData/exampleEmbedding.json"
+
+print("Setting Chinese dictionary...")
 
 jieba.set_dictionary(chineseDict)
 
 dataJsonList = []
 questionVecs = []
 
-with open(dataset, 'r', encoding="utf-8") as data:
-    jsonObj = data.readline()
-    while jsonObj:
+print("Loading data...")
+
+with open(datasetPath, 'r', encoding="utf-8") as dataset:
+    jsonObj = dataset.read()
+    parseJson = json.loads(jsonObj)
+    for paragraphID in parseJson:
         questionVec = {}
-        dict = json.loads(jsonObj)
-        dataJsonList.append(dict)
-        questionWordList = pseg.lcut(dataJsonList[-1]["q:"])
+        dataJsonList.append(parseJson[paragraphID])
+        questionWordList = pseg.lcut(dataJsonList[-1]["content"])
         for word, attribute in questionWordList:
             questionVec[word] = questionVec.get(word, 0) + 1
         questionVecs.append(questionVec)
-        jsonObj = data.readline()
+
+print("Cutting...")
 
 questionWordDict = {}
-for wordDict in questionVecs:
+for wordDict in tqdm(questionVecs):
     for word in wordDict:
         questionWordDict[word] = questionWordDict.get(word, 0) + 1
 
+print("Counting...")
+
 QuestionNum = len(questionVecs)
-for vec in questionVecs:
+for vec in tqdm(questionVecs):
     for w in vec:
         vec[w] = vec[w] * math.log10((QuestionNum + 1) / questionWordDict[w])
 
-with open(out, "w", encoding="utf-8") as outfile:
-    for dictionary in questionVecs:
+print("Writting...")
+
+with open(outPath, "w", encoding="utf-8") as outfile:
+    for dictionary in tqdm(questionVecs):
         json.dump(dictionary, outfile, ensure_ascii = False)
         outfile.write('\n')
 
