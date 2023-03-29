@@ -13,4 +13,6 @@ Desktop.ini
 *.egg-info
 dist
 build
-preprocessingData/questionsData.json
+preprocessingData/
+dataset/judgeData.json
+dataset/output.json
