@@ -1,3 +1,6 @@
+# Intro
+This is a simple tf-idf algorithm to retrieve the paragraph which is most likely to your query
+
 # Law-Advise-FAQ-Robot
 [dataset/](https://github.com/ssunoo/Law-Advise-FAQ-Robot/tree/main/dataset): Put in the dataset which you want to search.
 
