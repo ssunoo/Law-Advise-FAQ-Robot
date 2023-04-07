@@ -4,8 +4,9 @@ import jieba.posseg as pseg
 import string
 import math
 from tqdm import tqdm
+from collections import OrderedDict
 
-datasetPath = "../dataset/example.json"
+datasetPath = "../dataset/data2.json"
 chineseDict = "../dict.txt.big"
 outPath = "../preprocessingData/exampleEmbedding.json"
 
@@ -20,7 +21,7 @@ print("Loading data...")
 
 with open(datasetPath, 'r', encoding="utf-8") as dataset:
     jsonObj = dataset.read()
-    parseJson = json.loads(jsonObj)
+    parseJson = json.loads(jsonObj,  object_pairs_hook=OrderedDict)
     for paragraphID in parseJson:
         questionVec = {}
         dataJsonList.append(parseJson[paragraphID])

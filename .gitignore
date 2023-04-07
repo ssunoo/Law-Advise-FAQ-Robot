@@ -14,5 +14,5 @@ Desktop.ini
 dist
 build
 preprocessingData/
-dataset/judgeData.json
-dataset/output.json
+dataset/*
+!dataset/example.json
